@@ -1,5 +1,4 @@
-# This workflow will install Python dependencies, run tests and lint with a single version of Python
-# For more information see: https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-python
+# Github Action Job to refresh my personal spotify account's weekly playlist
 
 name: Python application
 
@@ -7,7 +6,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  build:
+  Discover_Weekly_Job:
 
     runs-on: ubuntu-latest
 
