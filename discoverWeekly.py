@@ -2,9 +2,11 @@
 import time
 import spotipy
 from dotenv import load_dotenv
-import os
+import json, os, signal
 from spotipy.oauth2 import SpotifyOAuth
-from flask import Flask, request, url_for, session, redirect
+from multiprocessing import Process
+
+from flask import Flask, request, url_for, session, redirect, jsonify
 
 load_dotenv()
 
@@ -23,6 +25,7 @@ app.secret_key = CLIENT_SECRET
 # set the key for the token info in the session dictionary
 TOKEN_INFO = 'token_info'
 
+
 # route to handle logging in
 @app.route('/')
 def login():
@@ -30,6 +33,11 @@ def login():
     auth_url = create_spotify_oauth().get_authorize_url()
     # redirect the user to the authorization URL
     return redirect(auth_url)
+
+@app.route('/stopServer', methods=['GET'])
+def stopServer():
+    os.kill(os.getpid(), signal.SIGINT)
+    return jsonify({ "success": True, "message": "Saved Weekly updated. Server is shutting down..." })
 
 # route to handle the redirect URI after authorization
 @app.route('/redirect')
@@ -93,7 +101,9 @@ def save_discover_weekly():
     sp.user_playlist_add_tracks(user_id, saved_weekly_playlist_id, song_uris, None)
 
     # return a success message
-    return ('Discover Weekly songs added successfully')
+    print('Discover Weekly songs added successfully')
+    return redirect('/stopServer')
+
 
 # function to get the token info from the session
 def get_token():
@@ -119,5 +129,8 @@ def create_spotify_oauth():
         redirect_uri = url_for('redirect_page', _external=True),
         scope='user-library-read playlist-modify-public playlist-modify-private'
     )
+
+
+
 
 app.run(debug=True)
