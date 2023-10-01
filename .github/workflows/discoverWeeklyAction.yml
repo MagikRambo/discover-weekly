@@ -31,9 +31,4 @@ jobs:
     - name: Echo GHA url 
       run: echo ${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }}
       shell: bash
-    - name: Run the Discover Weekly python script
-      env:
-        CLIENT_ID: ${{ secrets.CLIENT_ID }}
-        CLIENT_SECRET: ${{ secrets.CLIENT_SECRET }}
-      run: python discoverWeekly.py
-  
+
