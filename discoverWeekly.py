@@ -101,8 +101,9 @@ def save_discover_weekly():
     sp.user_playlist_add_tracks(user_id, saved_weekly_playlist_id, song_uris, None)
 
     # return a success message
-    print('Discover Weekly songs added successfully')
-    return redirect('/stopServer')
+    #print('Discover Weekly songs added successfully')
+    # return redirect('/stopServer')
+    return ('Discover Weekly songs added successfully')
 
 
 # function to get the token info from the session
@@ -132,5 +133,5 @@ def create_spotify_oauth():
 
 
 
-
-app.run(debug=True)
+if __name__ == "__main__":
+    app.run(host='0.0.0.0', port=5001, debug=True)
