@@ -1,2 +1,4 @@
 .env
 .cache
+.cache*
+get_refresh_token.py
