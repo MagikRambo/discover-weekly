@@ -18,7 +18,6 @@ itsdangerous==2.1.2
 Jinja2==3.1.2
 jsonify==0.5
 MarkupSafe==2.1.3
-pip @ file:///opt/homebrew/Cellar/python%403.11/3.11.4_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ensurepip/_bundled/pip-23.2.1-py3-none-any.whl#sha256=d7d1eb7f0a133fb047ce723048adb2d38a916c0b2ad986681295947e27ef325c
 pipenv==2023.9.8
 pipreqs==0.4.13
 platformdirs==3.10.0
@@ -28,7 +27,6 @@ pydantic_core==2.4.0
 python-dotenv==1.0.0
 redis==5.0.1
 requests==2.31.0
-setuptools @ file:///opt/homebrew/Cellar/python%403.11/3.11.4_1/Frameworks/Python.framework/Versions/3.11/lib/python3.11/ensurepip/_bundled/setuptools-68.0.0-py3-none-any.whl#sha256=c2938f0f477072384626b2c7a80023711adc20d22f56692fc90f89bfe79e3e81
 six==1.16.0
 sniffio==1.3.0
 spotipy==2.23.0
@@ -38,5 +36,4 @@ urllib3==2.0.5
 uvicorn==0.23.2
 virtualenv==20.24.5
 Werkzeug==3.0.0
-wheel @ file:///opt/homebrew/Cellar/python%403.11/3.11.4_1/libexec/wheel-0.41.0-py3-none-any.whl#sha256=b8e13cc8bcc31b246dc48e904dce287ad0cb5e51a89014d79b41917fcda0b9f8
 yarg==0.1.9
