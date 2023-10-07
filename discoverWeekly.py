@@ -27,7 +27,7 @@ def main():
     REFRESH_TOKEN = os.environ["REFRESH_TOKEN"]
     DISCOVER_WEEKLY_ID = os.environ["DISCOVER_WEEKLY_ID"]
     ALL_DISCOVERED_PLAYLIST_ID = os.environ["ALL_DISCOVERED_PLAYLIST_ID"]
-    USER_ID = "xmmxhd123"
+    USER_ID = os.environ["USERNAME"]
     logger.info("Start discover weekly archiving")
 
     client = load_client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, USER_ID, REFRESH_TOKEN)
