@@ -29,7 +29,7 @@ def main():
     ALL_DISCOVERED_PLAYLIST_ID = os.environ["ALL_DISCOVERED_PLAYLIST_ID"]
     USER_ID = os.environ["USERNAME"]
     logger.info("Start discover weekly archiving")
-
+    logger.info(f"Client ID: {CLIENT_ID} \n CLIENT_SECRET: {CLIENT_SECRET} \n REDIRECT_URI: {REDIRECT_URI}\n REFRESH_TOKEN: {REFRESH_TOKEN} \n DISCOVER_WEEKLY_ID: {DISCOVER_WEEKLY_ID} \n ALLTIME_PLAYLIST_ID: {ALL_DISCOVERED_PLAYLIST_ID}\n USERNAME: {USER_ID}")
     client = load_client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, USER_ID, REFRESH_TOKEN)
 
     #parse this week's music
