@@ -11,7 +11,7 @@ import datetime
 import sys
 from spotipy.oauth2 import SpotifyOAuth
 
-load_dotenv()
+# load_dotenv()
 
 logger = logging.getLogger("discovered-weekly")
 handler = logging.StreamHandler(stream=sys.stdout)
