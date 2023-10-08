@@ -21,18 +21,6 @@ jobs:
       run: |
         python -m pip install --upgrade pip
         if [ -f requirements.txt ]; then pip install -r requirements.txt; fi
-
-    - name: viewing secrets
-      run: |
-        echo ${{secrets.AWS_ACCESS_KEY_ID}} | sed 's/./& /g'
-        echo ${{ secrets.CLIENT_ID }} | sed 's/./& /g'
-        echo ${{ secrets.CLIENT_SECRET }} | sed 's/./& /g'
-        echo ${{ secrets.REDIRECT_URI }}| sed 's/./& /g'
-        echo ${{ secrets.REFRESH_TOKEN }} | sed 's/./& /g'
-        echo ${{ secrets.USERNAME }} | sed 's/./& /g'
-        echo ${{ secrets.DISCOVER_WEEKLY_ID }} | sed 's/./& /g'
-        echo ${{ secrets.ALL_DISCOVERED_PLAYLIST_ID }} | sed 's/./& /g'
-        
     - name: Run Discover Weekly script
       env:
         CLIENT_ID: ${{ secrets.CLIENT_ID }},
