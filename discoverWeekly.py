@@ -4,7 +4,7 @@
 
 import spotipy
 from spotipy.oauth2 import SpotifyOAuth
-from dotenv import load_dotenv
+from dotenv import dotenv_values
 import os
 import logging
 import datetime
@@ -19,15 +19,15 @@ logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
 def main():
-    load_dotenv()
+    config = { **dotenv_values(".env"), **os.environ}
 
-    CLIENT_ID = os.environ["CLIENT_ID"]
-    CLIENT_SECRET = os.environ["CLIENT_SECRET"]
-    REDIRECT_URI = os.environ["REDIRECT_URI"]
-    REFRESH_TOKEN = os.environ["REFRESH_TOKEN"]
-    DISCOVER_WEEKLY_ID = os.environ["DISCOVER_WEEKLY_ID"]
-    ALL_DISCOVERED_PLAYLIST_ID = os.environ["ALL_DISCOVERED_PLAYLIST_ID"]
-    USER_ID = os.environ["USERNAME"]
+    CLIENT_ID = config["CLIENT_ID"]
+    CLIENT_SECRET = config["CLIENT_SECRET"]
+    REDIRECT_URI = config["REDIRECT_URI"]
+    REFRESH_TOKEN = config["REFRESH_TOKEN"]
+    DISCOVER_WEEKLY_ID = config["DISCOVER_WEEKLY_ID"]
+    ALL_DISCOVERED_PLAYLIST_ID = config["ALL_DISCOVERED_PLAYLIST_ID"]
+    USER_ID = config["USERNAME"]
     logger.info("Start discover weekly archiving")
 
     client = load_client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, USER_ID, REFRESH_TOKEN)
