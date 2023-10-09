@@ -11,7 +11,6 @@ import datetime
 import sys
 from spotipy.oauth2 import SpotifyOAuth
 
-load_dotenv()
 
 logger = logging.getLogger("discovered-weekly")
 handler = logging.StreamHandler(stream=sys.stdout)
@@ -20,7 +19,8 @@ logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
 def main():
-        
+    load_dotenv()
+
     CLIENT_ID = os.environ["CLIENT_ID"]
     CLIENT_SECRET = os.environ["CLIENT_SECRET"]
     REDIRECT_URI = os.environ["REDIRECT_URI"]
