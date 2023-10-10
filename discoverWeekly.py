@@ -1,14 +1,10 @@
-# import necessary modules
-
-#Based implementation on https://github.com/EthanRosenthal/discovered-weekly/blob/main/discovered_weekly.py
-
-import spotipy
-from spotipy.oauth2 import SpotifyOAuth
-from dotenv import dotenv_values
-import os
+import datetime as dt
 import logging
-import datetime
+import os
 import sys
+
+from dotenv import dotenv_values
+import spotipy
 from spotipy.oauth2 import SpotifyOAuth
 
 
@@ -18,61 +14,60 @@ handler.setFormatter(logging.Formatter(fmt="%(asctime)s : %(levelname)s : %(mess
 logger.addHandler(handler)
 logger.setLevel(logging.INFO)
 
+
 def main():
-    config = { **dotenv_values(".env"), **os.environ}
-
-    CLIENT_ID = config["CLIENT_ID"]
-    CLIENT_SECRET = config["CLIENT_SECRET"]
-    REDIRECT_URI = config["REDIRECT_URI"]
-    REFRESH_TOKEN = config["REFRESH_TOKEN"]
-    DISCOVER_WEEKLY_ID = config["DISCOVER_WEEKLY_ID"]
-    ALL_DISCOVERED_PLAYLIST_ID = config["ALL_DISCOVERED_PLAYLIST_ID"]
-    USER_ID = config["USERNAME"]
+    # Override sample with non-sample file-based env variables,
+    # and override both with actual env variables
+    config = {**dotenv_values("sample.env"), **dotenv_values(".env"), **os.environ}
     logger.info("Start discover weekly archiving")
+    client = load_client(
+        config["CLIENT_ID"],
+        config["CLIENT_SECRET"],
+        config["REDIRECT_URI"],
+        config["USERNAME"],
+        config["REFRESH_TOKEN"],
+    )
 
-    client = load_client(CLIENT_ID, CLIENT_SECRET, REDIRECT_URI, USER_ID, REFRESH_TOKEN)
-
-    #parse this week's music
-    playlist_date, dw_uris = parse_current_week(client, DISCOVER_WEEKLY_ID)
-    
+    playlist_date, dw_uris = parse_this_week(
+        client, config["DISCOVER_WEEKLY_PLAYLIST_ID"]
+    )
     logger.info(f"Found this week's playlist for {playlist_date}")
-
     logger.info("Adding to all time playlist")
-    add_to_all_time_playlist(client, dw_uris, ALL_DISCOVERED_PLAYLIST_ID)
+    add_to_all_time_playlist(client, dw_uris, config["ALL_DISCOVERED_PLAYLIST_ID"])
 
     logger.info("Adding to the weekly archive")
-    add_to_weekly_archive(client, USER_ID, playlist_date, dw_uris)
+    add_to_weekly_archive(client, config["USERNAME"], playlist_date, dw_uris)
 
     logger.info("Done discover weekly archiving")
 
 
 def load_client(client_id, client_secret, redirect_uri, username, refresh_token):
     scopes = ["playlist-read-private", "playlist-modify-private"]
-
-    #authenticate with creds
+    # Authenticate
     auth_manager = SpotifyOAuth(
         scope=scopes,
         client_id=client_id,
         client_secret=client_secret,
         redirect_uri=redirect_uri,
-        username=username
+        username=username,
     )
-
     auth_manager.refresh_access_token(refresh_token)
     client = spotipy.Spotify(auth_manager=auth_manager)
     return client
 
-def parse_current_week(client, discover_weekly_id):
 
-    #Discover Weekly Items and parse for info
-    dw_items = client.playlist_items(discover_weekly_id)
-    playlist_created = datetime.datetime.strptime(
-        dw_items["items"][0]["added_at"], "%Y-%m-%dT%H:%M:%Sz"
+def parse_this_week(client, discover_weekly_playlist_id):
+
+    # Grab this week's Discover Weekly (DW) and parse for some info
+    dw_items = client.playlist_items(discover_weekly_playlist_id)
+    playlist_created = dt.datetime.strptime(
+        dw_items["items"][0]["added_at"], "%Y-%m-%dT%H:%M:%S%z"
     )
-
     playlist_date = playlist_created.strftime("%Y-%m-%d")
+
     dw_uris = [item["track"]["uri"] for item in dw_items["items"]]
     return playlist_date, dw_uris
+
 
 def add_to_all_time_playlist(client, dw_uris, all_discovered_playlist_id):
     # First, add to the all time DW
@@ -98,6 +93,7 @@ def add_to_all_time_playlist(client, dw_uris, all_discovered_playlist_id):
         return
 
     client.playlist_add_items(all_discovered_playlist_id, dw_uris)
+
 
 def add_to_weekly_archive(client, username, playlist_date, dw_uris):
     # Second, create the weekly archive playlist
@@ -130,6 +126,7 @@ def add_to_weekly_archive(client, username, playlist_date, dw_uris):
     )
     client.playlist_add_items(saved_playlist["id"], dw_uris)
     logger.info("Done creating this week's archive playlist.")
+
 
 if __name__ == "__main__":
     main()
