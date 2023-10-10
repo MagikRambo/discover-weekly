@@ -58,7 +58,7 @@ def load_client(client_id, client_secret, redirect_uri, username, refresh_token)
         username=username
     )
 
-    auth_manager.refresh_access_token(refresh_token=refresh_token)
+    auth_manager.refresh_access_token(refresh_token)
     client = spotipy.Spotify(auth_manager=auth_manager)
     return client
 
